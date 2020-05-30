@@ -1,0 +1,103 @@
+package homeworkproject;
+
+public interface Burger {
+	public void create();
+}
+
+public class BurgerMain {
+
+	public static void main(String[] args) {
+
+
+		Burger classicBurger = new ClassicBurger();
+		classicBurger.create();
+		
+		Burger eggBurger = new EggBurger();
+		Burger eggBurger = new EggBurgerDecorator(eggBurger);
+		classicBurger.create();
+		
+		//.....
+
+	}
+
+}
+public abstract class BurgerDecorator implements Burger{
+protected Burger decoratedBurger;
+	
+	public BurgerDecorator(Burger decoratedBurger) {
+		this.decoratedBurger = decoratedBurger;
+	}
+	
+	@Override
+	public void create() {
+		// Add additional taste to the basic burger class
+		this.decoratedBurger.create();
+	}
+
+}
+public class BurgerFacade {
+	private Burger classicBurger; 
+	private Burger eggBurger; 
+	private Burger cheeseBurger; 
+	private Burger classicBurgerDecorator;
+	
+	public BurgerFacade(){
+		this.classicBurger = new ClassicBurger( title: "Classic Burger");
+		this.eggBurger = new EggBurger( title: "Eggburger");
+		this.cheeseBurger = new CheeseBurger( title: "Cheeseburger");
+		this.classicBurgerDecorator = new ClassicBurgerDecorator();
+			
+	}
+	
+	public void makeClasicBurger() {
+		this.classicBurger.makeBurger();
+		this.classicBurgerDecorator.makeBurger();
+	}
+	public void makeEggBurger() {
+		this.eggBurger.makeBurger();
+		this.classicBurgerDecorator.makeBurger();
+	}
+	public void makeCheeseBurger() {
+		this.cheeseBurger.makeBurger();
+		this.classicBurgerDecorator.makeBurger();
+	}
+}
+public class CheeseBurger implements Burger {
+	@Override
+	public void create() {
+		System.out.println("Making burger with cheese ");
+	}
+
+}
+public class ClassicBurger implements Burger {
+	@Override
+	public void create() {
+		System.out.println("Making classic burger");
+	}
+
+}
+public class EggBurger implements Burger {
+	@Override
+	public void create() {
+		System.out.println("Making burger with egg");
+	}
+
+}
+
+public class ClassicBurgerDecorator extends BurgerDecorator {
+	public ClassicBurgerDecorator(Burger decoratedBurger) {
+		super(decoratedBurger);
+	}
+	
+	public void create() {
+		decoratedBurger.create();
+		makeBurger(decoratedBurger);
+	}
+	
+	private void makeBurger(Burger decoratedBurger) {
+		//...
+		System.out.println("Making burger");
+	}
+
+}
+	
